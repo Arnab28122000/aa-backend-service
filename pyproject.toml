@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "aa-backend-service"
+version = "0.1.0"
+description = ""
+authors = ["arnab28122000 <arnab.bhattacharya28122000@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+pandas = "^2.2.2"
+sqlmodel = "^0.0.18"
+uuid = "^1.30"
+fastapi = "^0.111.0"
+python-crontab = "^3.1.0"
+beautifulsoup4 = "^4.12.3"
+requests = "^2.32.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
