@@ -17,6 +17,7 @@ python-crontab = "^3.1.0"
 beautifulsoup4 = "^4.12.3"
 requests = "^2.32.2"
 gunicorn = "^22.0.0"
+psycopg2 = "^2.9.9"
 
 
 [build-system]
