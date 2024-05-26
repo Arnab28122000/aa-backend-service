@@ -31,3 +31,13 @@ class TimeSeriesResponse(BaseModel):
     na: List[int]
     testing_phase: List[int]
     live: List[int]
+
+class Coordinate(BaseModel):
+    x: str
+    y: int
+
+class AATrend(BaseModel):
+    aa_name: str
+    na: List[Coordinate]
+    testing_phase: List[Coordinate]
+    live: List[Coordinate]

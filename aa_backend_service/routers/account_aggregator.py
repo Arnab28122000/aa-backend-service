@@ -8,23 +8,13 @@ from sqlmodel import Session, col, select
 from sqlalchemy.sql import text
 
 from aa_backend_service.db import get_session
-from aa_backend_service.db.account_aggregator import AccountAggregator, TimeSeriesResponse
+from aa_backend_service.db.account_aggregator import AATrend, AccountAggregator, TimeSeriesResponse
 
 router = APIRouter(
     prefix="/aa",
     tags=["aa"],
     responses={404: {"description": "Not found"}},
 )
-
-@router.get("/aa_metric")
-async def prompt_with_context_pinecone():
-    try:
-        val = ''
-       
-        return JSONResponse(status_code=200, content={"message": val})
-    except Exception as e:
-        print("Error: ", e)
-        return JSONResponse(status_code=500, content={"mesage": "Internal Server Error"})
     
 @router.get("/search/", response_model=List[str])
 def search_account_aggregator(aa_name: Optional[str] = None, session: Session = Depends(get_session)):
@@ -42,7 +32,7 @@ def search_account_aggregator(aa_name: Optional[str] = None, session: Session = 
     
     return JSONResponse(status_code=200, content=results)
 
-@router.get("/timeseries/", response_model=List[AccountAggregator])
+@router.get("/timeseries/", response_model=List[AccountAggregator], include_in_schema=False)
 def get_timeseries_data(
     aa_name: Optional[str] = None,
     start_date: Optional[date] = Query(None),
@@ -78,7 +68,7 @@ def get_timeseries_data(
 
     return JSONResponse(status_code=200, content=response_data)
 
-@router.get("/timeseries_graph/", response_model=TimeSeriesResponse)
+@router.get("/timeseries_graph/", response_model=TimeSeriesResponse, include_in_schema=False)
 def get_timeseries_data(
     aa_name: Optional[str] = None,
     start_date: Optional[date] = Query(None),
@@ -113,7 +103,7 @@ def get_timeseries_data(
 
     return JSONResponse(status_code=200, content=response_data)
 
-@router.get("/nivo_timeseries_graph/", response_model=TimeSeriesResponse)
+@router.get("/nivo_timeseries_graph/", response_model=AATrend)
 def get_timeseries_data(
     aa_name: Optional[str] = None,
     start_date: Optional[date] = Query(None),
