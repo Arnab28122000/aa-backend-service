@@ -139,10 +139,21 @@ def get_timeseries_data(
         raise HTTPException(status_code=404, detail="No data found for the specified parameters")
     
     response_data = {
-        "aa_name": "Setu AA",
-        "na": [{"x": result.date.strftime("%d-%m-%Y"), "y": result.na} for result in results],
-        "testing_phase": [{"x": result.date.strftime("%d-%m-%Y"), "y": result.testing_phase} for result in results],
-        "live": [{"x": result.date.strftime("%d-%m-%Y"), "y": result.live} for result in results]
+        "aa_name": aa_name,
+        "data": [
+            {
+                "id": "na",
+                "data": [{"x": result.date.strftime("%d-%m-%Y"), "y": result.na} for result in results]
+            },
+            {
+                "id": "testing_phase",
+                "data": [{"x": result.date.strftime("%d-%m-%Y"), "y": result.testing_phase} for result in results]
+            },
+            {
+                "id": "live",
+                "data": [{"x": result.date.strftime("%d-%m-%Y"), "y": result.live} for result in results]
+            }
+        ]
     }
 
     return JSONResponse(status_code=200, content=response_data)
