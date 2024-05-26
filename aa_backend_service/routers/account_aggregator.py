@@ -112,3 +112,37 @@ def get_timeseries_data(
     }
 
     return JSONResponse(status_code=200, content=response_data)
+
+@router.get("/nivo_timeseries_graph/", response_model=TimeSeriesResponse)
+def get_timeseries_data(
+    aa_name: Optional[str] = None,
+    start_date: Optional[date] = Query(None),
+    end_date: Optional[date] = Query(None),
+    session: Session = Depends(get_session)
+):
+    # Default to the past week if no dates are provided
+    if aa_name is None:
+        raise HTTPException(status_code=400, detail="Please provide an AA Name")
+    
+    if start_date is None:
+        start_date = datetime.today().date() - timedelta(days=7)
+    if end_date is None:
+        end_date = datetime.today().date()
+
+    statement = select(AccountAggregator).where(AccountAggregator.date >= start_date, AccountAggregator.date <= end_date)
+
+    if aa_name:
+        statement = statement.where(AccountAggregator.aa_name == aa_name)
+
+    results = session.exec(statement).all()
+    if not results:
+        raise HTTPException(status_code=404, detail="No data found for the specified parameters")
+    
+    response_data = {
+        "aa_name": "Setu AA",
+        "na": [{"x": result.date.strftime("%d-%m-%Y"), "y": result.na} for result in results],
+        "testing_phase": [{"x": result.date.strftime("%d-%m-%Y"), "y": result.testing_phase} for result in results],
+        "live": [{"x": result.date.strftime("%d-%m-%Y"), "y": result.live} for result in results]
+    }
+
+    return JSONResponse(status_code=200, content=response_data)

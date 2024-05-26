@@ -28,6 +28,6 @@ app.include_router(account_aggregator.router)
 async def root():
     return "Welcome to AA Metrics"
 
-# if __name__ == "__main__":
-#     # create_cron_job()
-#     create_dummy_aa_data()
+if __name__ == "__main__":
+    create_cron_job()
+    # create_dummy_aa_data()
