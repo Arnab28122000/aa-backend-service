@@ -25,7 +25,7 @@ app.add_middleware(
 
 app.include_router(account_aggregator.router)
 
-@app.get("/")
+@app.get("/", include_in_schema=False)
 async def root():
     return "Welcome to AA Metrics"
 
