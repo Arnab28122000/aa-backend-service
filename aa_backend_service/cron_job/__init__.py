@@ -4,10 +4,13 @@ from crontab import CronTab
 
 def create_cron_job():
     user_cron = CronTab(user=True)
-    python_executable = os.path.abspath("aa_metrics.py")
+    # python_executable = os.path.abspath("aa_metrics.py")
+    current_directory = os.path.dirname(os.path.abspath("aa_metrics.py"))
+
+    python_executable = os.path.join(current_directory, "aa_metrics.py")
     
     # Construct the command to call this script with --run-task argument
-    command = f'python3 {python_executable} --run-task'
+    command = f'python3 {python_executable}'
     
     # Remove existing job with the same comment to avoid duplicates
     for job in user_cron.find_comment('daily_task'):

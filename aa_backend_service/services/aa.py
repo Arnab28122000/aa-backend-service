@@ -2,8 +2,11 @@ import uuid
 import random
 from datetime import datetime, timedelta
 
+from fastapi import Depends
+
 from aa_backend_service.db.account_aggregator import AccountAggregatorCreate, AccountAggregator
 from aa_backend_service.db import Session, engine
+from sqlmodel import select
 
 get_session = Session(engine)
 def get_db():
@@ -46,3 +49,14 @@ def create_dummy_aa_data():
             get_session.add(aa_db_value)
             get_session.commit()
             get_session.close()
+
+def check_and_update_dummy_data():
+    try:
+        statement = select(AccountAggregator)
+        result = get_session.exec(statement).all()
+        get_session.close()
+        if len(result) == 0:
+            # If no data found, adding dummy data to table
+            create_dummy_aa_data()
+    except Exception as e:
+        print("Internal Error: ", e)

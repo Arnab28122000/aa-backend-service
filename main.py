@@ -2,6 +2,10 @@ from fastapi import FastAPI
 from aa_backend_service.routers import account_aggregator
 from fastapi.middleware.cors import CORSMiddleware
 
+import subprocess
+import sys
+
+
 from aa_backend_service.cron_job import create_cron_job
 from aa_backend_service.services.aa import create_dummy_aa_data
 
@@ -22,6 +26,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+def run_tests():
+    result = subprocess.run([sys.executable, '-m', 'pytest'], check=False)
+    return result.returncode
 
 
 app.include_router(account_aggregator.router)
@@ -30,6 +37,21 @@ app.include_router(account_aggregator.router)
 async def root():
     return "Welcome to AA Metrics"
 
+def start_application():
+    # Here you could start your application if necessary
+    # For example, you could start a server or set up any required state
+    pass
+
+def run_tests():
+    # Run the tests using pytest
+    result = subprocess.run([sys.executable, '-m', 'pytest'], check=False)
+    return result.returncode
+
 if __name__ == "__main__":
-    create_cron_job()
-    # create_dummy_aa_data()
+    # start_application()
+    # try:
+    #     exit_code = run_tests()
+    #     sys.exit(exit_code)
+    # except Exception as e:
+    #     print(e)
+    create_dummy_aa_data()

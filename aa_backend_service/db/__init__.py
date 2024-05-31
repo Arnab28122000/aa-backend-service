@@ -2,7 +2,7 @@ import os
 from sqlmodel import create_engine, Session
 
 db_username = os.environ['dashtics_username']
-db_password = os.environ['dashtics_password']
+# db_password = os.environ['dashtics_password']
 db_endpoint = os.environ['dashtics_endpoint']
 db_name = os.environ['dashtics_db_name']
 
